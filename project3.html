@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Project 3 – To Do List App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Serif+Display&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #1a2e5a; --accent: #3b5bdb; --sky: #e8edf8;
+      --text: #1e2a4a; --muted: #5a6a8a; --border: #d0d9ef;
+      --shadow: 0 4px 24px rgba(26,46,90,.10);
+    }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--sky); color: var(--text); min-height: 100vh; }
+
+    header {
+      background: linear-gradient(135deg, var(--navy) 0%, #243870 60%, #2d4d9e 100%);
+      color: #fff; text-align: center; padding: 36px 20px 28px;
+    }
+    header .badge {
+      display: inline-block; background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.25); border-radius: 20px;
+      padding: 4px 16px; font-size: .78rem; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px;
+    }
+    header h1 { font-family: 'DM Serif Display', serif; font-size: clamp(1.4rem, 3.5vw, 2rem); }
+    header p { margin-top: 6px; font-size: .88rem; opacity: .75; }
+
+    main { max-width: 780px; margin: 0 auto; padding: 40px 20px 60px; }
+
+    .card {
+      background: #fff; border-radius: 18px; box-shadow: var(--shadow);
+      padding: 32px 36px; margin-bottom: 28px;
+      animation: fadeUp .6s ease both;
+    }
+    .card h2 { font-size: 1.05rem; font-weight: 800; color: var(--navy); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--sky); }
+    .card p { font-size: .9rem; color: var(--muted); line-height: 1.85; }
+
+    /* TO DO LIST */
+    .todo-input-row {
+      display: flex; gap: 10px; margin-bottom: 20px;
+    }
+    .todo-input {
+      flex: 1; border: 2px solid var(--border); border-radius: 10px;
+      padding: 11px 16px; font-family: inherit; font-size: .9rem; color: var(--text);
+      outline: none; transition: border-color .2s;
+    }
+    .todo-input:focus { border-color: var(--accent); }
+    .todo-add-btn {
+      background: var(--navy); color: #fff; border: none;
+      border-radius: 10px; padding: 11px 22px;
+      font-family: inherit; font-size: .9rem; font-weight: 700;
+      cursor: pointer; transition: background .2s, transform .15s;
+      white-space: nowrap;
+    }
+    .todo-add-btn:hover { background: var(--accent); transform: scale(1.03); }
+
+    .todo-stats {
+      display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap;
+    }
+    .stat-badge {
+      background: var(--sky); border-radius: 8px;
+      padding: 6px 14px; font-size: .8rem; font-weight: 600; color: var(--muted);
+    }
+    .stat-badge span { color: var(--navy); font-weight: 800; }
+
+    .todo-list { display: flex; flex-direction: column; gap: 8px; min-height: 60px; }
+    .todo-item {
+      display: flex; align-items: center; gap: 12px;
+      background: var(--sky); border-radius: 10px;
+      padding: 12px 14px; transition: opacity .2s, transform .2s;
+      animation: slideIn .25s ease;
+    }
+    .todo-item.done { opacity: .55; }
+    .todo-item.done .todo-text { text-decoration: line-through; color: var(--muted); }
+    .todo-check {
+      width: 20px; height: 20px; border-radius: 6px;
+      border: 2px solid var(--border); background: #fff;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: background .2s, border-color .2s;
+    }
+    .todo-item.done .todo-check { background: var(--accent); border-color: var(--accent); }
+    .todo-check::after { content: '✓'; color: #fff; font-size: .75rem; font-weight: 800; display: none; }
+    .todo-item.done .todo-check::after { display: block; }
+    .todo-text { flex: 1; font-size: .88rem; font-weight: 500; color: var(--text); }
+    .todo-del {
+      background: none; border: none; cursor: pointer;
+      color: #c0392b; font-size: 1.1rem; padding: 2px 6px;
+      border-radius: 6px; transition: background .15s;
+      flex-shrink: 0;
+    }
+    .todo-del:hover { background: rgba(220,60,60,.1); }
+    .empty-msg { text-align: center; color: var(--muted); font-size: .88rem; padding: 20px; }
+
+    .desc-list { display: flex; flex-direction: column; gap: 10px; }
+    .desc-list .row { display: flex; align-items: flex-start; gap: 12px; font-size: .9rem; padding: 10px 14px; background: var(--sky); border-radius: 10px; }
+    .desc-list .label { color: var(--muted); min-width: 90px; font-size: .82rem; padding-top: 2px; }
+    .desc-list .val { font-weight: 600; color: var(--text); }
+
+    .btn-back {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--navy); color: #fff; border: none;
+      border-radius: 10px; padding: 12px 28px;
+      font-size: .9rem; font-weight: 600; font-family: inherit;
+      cursor: pointer; text-decoration: none; transition: background .2s, transform .15s;
+    }
+    .btn-back:hover { background: var(--accent); transform: scale(1.03); }
+
+    footer { background: var(--navy); color: rgba(255,255,255,.6); text-align: center; padding: 18px; font-size: .82rem; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+    @media (max-width: 520px) { .card { padding: 22px 16px; } }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="badge">Project 3</div>
+  <h1>To Do List App</h1>
+  <p>Mata Pelajaran TIK – Kelas XI</p>
+</header>
+
+<main>
+
+  <div class="card" style="animation-delay:.05s">
+    <h2>📋 Deskripsi Project</h2>
+    <p>
+      To Do List App adalah aplikasi web dinamis yang memungkinkan pengguna untuk mengelola daftar tugas secara interaktif.
+      Pengguna dapat menambah tugas baru, menandai tugas sebagai selesai, dan menghapus tugas yang sudah tidak diperlukan.
+      Seluruh logika dibangun menggunakan JavaScript dengan manipulasi DOM secara langsung.
+    </p>
+  </div>
+
+  <div class="card" style="animation-delay:.1s">
+    <h2>✅ Demo To Do List</h2>
+    <div class="todo-input-row">
+      <input type="text" class="todo-input" id="todoInput" placeholder="Tambah tugas baru..." onkeydown="if(event.key==='Enter') addTodo()"/>
+      <button class="todo-add-btn" onclick="addTodo()">+ Tambah</button>
+    </div>
+    <div class="todo-stats">
+      <div class="stat-badge">Total: <span id="statTotal">0</span></div>
+      <div class="stat-badge">Selesai: <span id="statDone">0</span></div>
+      <div class="stat-badge">Aktif: <span id="statActive">0</span></div>
+    </div>
+    <div class="todo-list" id="todoList">
+      <div class="empty-msg" id="emptyMsg">Belum ada tugas. Tambahkan tugas pertamamu! 🎯</div>
+    </div>
+  </div>
+
+  <div class="card" style="animation-delay:.15s">
+    <h2>📌 Detail Project</h2>
+    <div class="desc-list">
+      <div class="row"><span class="label">Nama Project</span><span class="val">To Do List App</span></div>
+      <div class="row"><span class="label">Fitur</span><span class="val">Tambah, selesaikan, hapus tugas + statistik</span></div>
+      <div class="row"><span class="label">Teknologi</span><span class="val">HTML5, CSS3, JavaScript ES6 (DOM)</span></div>
+      <div class="row"><span class="label">Status</span><span class="val">✅ Selesai & Berjalan</span></div>
+    </div>
+  </div>
+
+  <a href="index.html" class="btn-back"><span>←</span> Kembali ke Halaman Utama</a>
+
+</main>
+
+<footer>&copy; 2026 Profil Siswa TIK | Kolese Kanisius</footer>
+
+<script>
+  console.log("✅ Project 3: To Do List App dimuat.");
+
+  let todos = [
+    { id: 1, text: 'Belajar HTML dasar', done: true },
+    { id: 2, text: 'Latihan CSS Flexbox', done: true },
+    { id: 3, text: 'Membuat project JavaScript', done: false },
+  ];
+  let nextId = 4;
+
+  function render() {
+    const list = document.getElementById('todoList');
+    const empty = document.getElementById('emptyMsg');
+    const done = todos.filter(t => t.done).length;
+    document.getElementById('statTotal').textContent = todos.length;
+    document.getElementById('statDone').textContent = done;
+    document.getElementById('statActive').textContent = todos.length - done;
+
+    // Remove old items (keep empty msg)
+    list.querySelectorAll('.todo-item').forEach(el => el.remove());
+    empty.style.display = todos.length === 0 ? 'block' : 'none';
+
+    todos.forEach(todo => {
+      const item = document.createElement('div');
+      item.className = 'todo-item' + (todo.done ? ' done' : '');
+      item.innerHTML = `
+        <div class="todo-check" onclick="toggleTodo(${todo.id})"></div>
+        <span class="todo-text">${todo.text}</span>
+        <button class="todo-del" onclick="deleteTodo(${todo.id})" title="Hapus">✕</button>
+      `;
+      list.appendChild(item);
+    });
+  }
+
+  function addTodo() {
+    const input = document.getElementById('todoInput');
+    const text = input.value.trim();
+    if (!text) { alert('Masukkan nama tugas terlebih dahulu!'); return; }
+    todos.push({ id: nextId++, text, done: false });
+    input.value = '';
+    render();
+    console.log(`✅ Tugas ditambah: "${text}"`);
+  }
+
+  function toggleTodo(id) {
+    const t = todos.find(t => t.id === id);
+    if (t) { t.done = !t.done; render(); }
+  }
+
+  function deleteTodo(id) {
+    todos = todos.filter(t => t.id !== id);
+    render();
+  }
+
+  render();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Project 2 – Kalkulator JavaScript</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Serif+Display&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #1a2e5a; --accent: #3b5bdb; --sky: #e8edf8;
+      --white: #ffffff; --text: #1e2a4a; --muted: #5a6a8a;
+      --border: #d0d9ef; --shadow: 0 4px 24px rgba(26,46,90,.10);
+    }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--sky); color: var(--text); min-height: 100vh; }
+
+    header {
+      background: linear-gradient(135deg, var(--navy) 0%, #243870 60%, #2d4d9e 100%);
+      color: #fff; text-align: center; padding: 36px 20px 28px;
+    }
+    header .badge {
+      display: inline-block; background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.25); border-radius: 20px;
+      padding: 4px 16px; font-size: .78rem; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px;
+    }
+    header h1 { font-family: 'DM Serif Display', serif; font-size: clamp(1.4rem, 3.5vw, 2rem); }
+    header p { margin-top: 6px; font-size: .88rem; opacity: .75; }
+
+    main { max-width: 780px; margin: 0 auto; padding: 40px 20px 60px; }
+
+    .card {
+      background: #fff; border-radius: 18px; box-shadow: var(--shadow);
+      padding: 32px 36px; margin-bottom: 28px;
+      animation: fadeUp .6s ease both;
+    }
+    .card h2 { font-size: 1.05rem; font-weight: 800; color: var(--navy); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--sky); }
+    .card p { font-size: .9rem; color: var(--muted); line-height: 1.85; }
+
+    /* KALKULATOR */
+    .calc-wrapper { display: flex; justify-content: center; margin-top: 10px; }
+    .calc {
+      background: var(--navy); border-radius: 20px;
+      padding: 24px; width: 280px;
+      box-shadow: 0 8px 32px rgba(26,46,90,.3);
+    }
+    .calc-display {
+      background: rgba(255,255,255,.08);
+      border-radius: 12px; padding: 12px 16px;
+      text-align: right; margin-bottom: 16px;
+      min-height: 70px; display: flex; flex-direction: column; justify-content: flex-end;
+    }
+    .calc-expr { color: rgba(255,255,255,.45); font-size: .78rem; margin-bottom: 4px; min-height: 18px; }
+    .calc-result { color: #fff; font-size: 1.8rem; font-weight: 700; letter-spacing: .5px; word-break: break-all; }
+    .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .calc-btn {
+      border: none; border-radius: 10px; padding: 14px 8px;
+      font-family: inherit; font-size: 1rem; font-weight: 600;
+      cursor: pointer; transition: transform .1s, opacity .15s;
+    }
+    .calc-btn:active { transform: scale(.93); }
+    .calc-btn.num { background: rgba(255,255,255,.12); color: #fff; }
+    .calc-btn.num:hover { background: rgba(255,255,255,.2); }
+    .calc-btn.op { background: rgba(59,91,219,.6); color: #fff; }
+    .calc-btn.op:hover { background: var(--accent); }
+    .calc-btn.eq { background: var(--accent); color: #fff; }
+    .calc-btn.eq:hover { background: #2244c0; }
+    .calc-btn.clr { background: rgba(220,60,60,.5); color: #fff; }
+    .calc-btn.clr:hover { background: #c0392b; }
+    .calc-btn.wide { grid-column: span 2; }
+
+    .desc-list { display: flex; flex-direction: column; gap: 10px; }
+    .desc-list .row { display: flex; align-items: flex-start; gap: 12px; font-size: .9rem; padding: 10px 14px; background: var(--sky); border-radius: 10px; }
+    .desc-list .label { color: var(--muted); min-width: 90px; font-size: .82rem; padding-top: 2px; }
+    .desc-list .val { font-weight: 600; color: var(--text); }
+
+    .btn-back {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--navy); color: #fff; border: none;
+      border-radius: 10px; padding: 12px 28px;
+      font-size: .9rem; font-weight: 600; font-family: inherit;
+      cursor: pointer; text-decoration: none; transition: background .2s, transform .15s;
+    }
+    .btn-back:hover { background: var(--accent); transform: scale(1.03); }
+
+    footer { background: var(--navy); color: rgba(255,255,255,.6); text-align: center; padding: 18px; font-size: .82rem; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 520px) { .card { padding: 22px 16px; } }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="badge">Project 2</div>
+  <h1>Kalkulator JavaScript</h1>
+  <p>Mata Pelajaran TIK – Kelas XI</p>
+</header>
+
+<main>
+
+  <div class="card" style="animation-delay:.05s">
+    <h2>📋 Deskripsi Project</h2>
+    <p>
+      Kalkulator JavaScript adalah aplikasi web interaktif yang mampu melakukan operasi aritmatika dasar seperti penjumlahan, pengurangan, perkalian, dan pembagian.
+      Dibangun sepenuhnya dengan HTML, CSS, dan JavaScript tanpa menggunakan library eksternal.
+      Project ini melatih kemampuan manipulasi DOM dan logika pemrograman JavaScript.
+    </p>
+  </div>
+
+  <div class="card" style="animation-delay:.1s">
+    <h2>🧮 Demo Kalkulator</h2>
+    <div class="calc-wrapper">
+      <div class="calc">
+        <div class="calc-display">
+          <div class="calc-expr" id="expr"></div>
+          <div class="calc-result" id="result">0</div>
+        </div>
+        <div class="calc-grid">
+          <button class="calc-btn clr wide" onclick="clearCalc()">AC</button>
+          <button class="calc-btn op" onclick="inputOp('%')">%</button>
+          <button class="calc-btn op" onclick="inputOp('÷')">÷</button>
+          <button class="calc-btn num" onclick="inputNum('7')">7</button>
+          <button class="calc-btn num" onclick="inputNum('8')">8</button>
+          <button class="calc-btn num" onclick="inputNum('9')">9</button>
+          <button class="calc-btn op" onclick="inputOp('×')">×</button>
+          <button class="calc-btn num" onclick="inputNum('4')">4</button>
+          <button class="calc-btn num" onclick="inputNum('5')">5</button>
+          <button class="calc-btn num" onclick="inputNum('6')">6</button>
+          <button class="calc-btn op" onclick="inputOp('−')">−</button>
+          <button class="calc-btn num" onclick="inputNum('1')">1</button>
+          <button class="calc-btn num" onclick="inputNum('2')">2</button>
+          <button class="calc-btn num" onclick="inputNum('3')">3</button>
+          <button class="calc-btn op" onclick="inputOp('+')">+</button>
+          <button class="calc-btn num wide" onclick="inputNum('0')">0</button>
+          <button class="calc-btn num" onclick="inputDot()">.</button>
+          <button class="calc-btn eq" onclick="calculate()">=</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="animation-delay:.15s">
+    <h2>📌 Detail Project</h2>
+    <div class="desc-list">
+      <div class="row"><span class="label">Nama Project</span><span class="val">Kalkulator JavaScript</span></div>
+      <div class="row"><span class="label">Fitur</span><span class="val">+, −, ×, ÷, %, AC, dan desimal</span></div>
+      <div class="row"><span class="label">Teknologi</span><span class="val">HTML5, CSS3, JavaScript ES6</span></div>
+      <div class="row"><span class="label">Status</span><span class="val">✅ Selesai & Berjalan</span></div>
+    </div>
+  </div>
+
+  <a href="index.html" class="btn-back"><span>←</span> Kembali ke Halaman Utama</a>
+
+</main>
+
+<footer>&copy; 2026 Profil Siswa TIK | Kolese Kanisius</footer>
+
+<script>
+  console.log("🧮 Project 2: Kalkulator JavaScript dimuat.");
+
+  let current = '0', expr = '', hasResult = false;
+
+  function updateDisplay() {
+    document.getElementById('result').textContent = current;
+    document.getElementById('expr').textContent = expr;
+  }
+
+  function inputNum(n) {
+    if (hasResult) { current = n; expr = ''; hasResult = false; }
+    else current = current === '0' ? n : current + n;
+    updateDisplay();
+  }
+
+  function inputOp(op) {
+    hasResult = false;
+    expr = current + ' ' + op;
+    current = '0';
+    updateDisplay();
+  }
+
+  function inputDot() {
+    if (!current.includes('.')) current += '.';
+    updateDisplay();
+  }
+
+  function clearCalc() {
+    current = '0'; expr = ''; hasResult = false;
+    updateDisplay();
+  }
+
+  function calculate() {
+    if (!expr) return;
+    const parts = expr.trim().split(' ');
+    const a = parseFloat(parts[0]);
+    const op = parts[1];
+    const b = parseFloat(current);
+    let res;
+    if (op === '+') res = a + b;
+    else if (op === '−') res = a - b;
+    else if (op === '×') res = a * b;
+    else if (op === '÷') res = b !== 0 ? a / b : 'Error';
+    else if (op === '%') res = a % b;
+    expr = `${a} ${op} ${b} =`;
+    current = String(parseFloat(res.toFixed(10)));
+    hasResult = true;
+    updateDisplay();
+  }
+</script>
+
+</body>
+</html>

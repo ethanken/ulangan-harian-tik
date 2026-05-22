@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Profil Siswa Kelas XI – TIK</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Serif+Display&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #1a2e5a;
+      --navy2:  #243870;
+      --accent: #3b5bdb;
+      --sky:    #e8edf8;
+      --white:  #ffffff;
+      --text:   #1e2a4a;
+      --muted:  #5a6a8a;
+      --border: #d0d9ef;
+      --card:   #ffffff;
+      --shadow: 0 4px 24px rgba(26,46,90,.10);
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--sky);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy2) 60%, #2d4d9e 100%);
+      color: var(--white);
+      text-align: center;
+      padding: 38px 20px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 80% 50%, rgba(255,255,255,.07) 0%, transparent 60%);
+    }
+    header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      letter-spacing: .3px;
+      position: relative;
+    }
+    header p {
+      margin-top: 6px;
+      font-size: .95rem;
+      opacity: .78;
+      font-weight: 500;
+      letter-spacing: .5px;
+      position: relative;
+    }
+    .header-badge {
+      display: inline-block;
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 20px;
+      padding: 4px 16px;
+      font-size: .78rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      position: relative;
+    }
+
+    /* ── LAYOUT ── */
+    main { max-width: 1100px; margin: 0 auto; padding: 40px 20px 60px; }
+
+    /* ── PROFILE CARD ── */
+    .profile-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 50px;
+    }
+    .profile-card {
+      background: var(--card);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      padding: 36px 48px;
+      text-align: center;
+      min-width: 320px;
+      max-width: 440px;
+      width: 100%;
+      animation: fadeUp .6s ease both;
+    }
+    .avatar {
+      width: 96px; height: 96px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid var(--sky);
+      box-shadow: 0 0 0 3px var(--accent);
+      margin-bottom: 16px;
+    }
+    .profile-card h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .profile-card .subtitle {
+      font-size: .82rem;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+    .profile-info {
+      text-align: left;
+      background: var(--sky);
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-size: .87rem;
+      line-height: 1.9;
+    }
+    .profile-info span { color: var(--muted); }
+    .profile-info strong { color: var(--text); }
+
+    /* ── SECTION ── */
+    section { margin-bottom: 52px; animation: fadeUp .7s ease both; }
+    section h2 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    section h2::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent) 0%, transparent 100%);
+      border-radius: 2px;
+    }
+
+    /* ── ABOUT ── */
+    .about-box {
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 24px 28px;
+      font-size: .93rem;
+      line-height: 1.85;
+      color: var(--muted);
+    }
+
+    /* ── TABLE ── */
+    .table-wrap {
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+    thead tr { background: var(--navy); color: var(--white); }
+    thead th { padding: 14px 20px; font-weight: 600; letter-spacing: .3px; }
+    tbody tr { border-bottom: 1px solid var(--border); transition: background .15s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--sky); }
+    tbody td { padding: 13px 20px; text-align: center; color: var(--text); }
+    .badge-nilai {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--accent), #2244c0);
+      color: #fff;
+      border-radius: 8px;
+      padding: 3px 14px;
+      font-weight: 700;
+      font-size: .88rem;
+    }
+
+    /* ── PROJECTS ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .project-card {
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 26px 24px;
+      border: 1px solid var(--border);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .project-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(26,46,90,.15); }
+    .project-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+    .project-card p { font-size: .85rem; color: var(--muted); margin-bottom: 18px; line-height: 1.7; }
+    .btn {
+      display: inline-block;
+      background: var(--navy);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 9px 22px;
+      font-size: .85rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background .2s, transform .15s;
+    }
+    .btn:hover { background: var(--accent); transform: scale(1.03); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy);
+      color: rgba(255,255,255,.65);
+      text-align: center;
+      padding: 20px;
+      font-size: .82rem;
+      font-weight: 500;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .profile-card { padding: 28px 20px; }
+      thead th, tbody td { padding: 11px 12px; font-size: .82rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-badge">Kelas XI · TIK</div>
+  <h1>Profil Siswa Kelas XI</h1>
+  <p>Mata Pelajaran Teknologi Informasi dan Komunikasi</p>
+</header>
+
+<main>
+
+  <!-- BIODATA -->
+  <div class="profile-wrap">
+    <div class="profile-card">
+      <img
+        src="WhatsApp Image 2026-05-18 at 20.11.02.jpeg"
+        alt="Foto Profil"
+        class="avatar"
+        id="profileImg"
+      />
+      <h2 id="namaLengkap">Ethan Kenzo Lim</h2>
+      <p class="subtitle">Siswa Kolese Kanisius Jakarta</p>
+      <div class="profile-info">
+        <div><span>Kelas &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </span><strong>XI-A2</strong></div>
+        <div><span>Sekolah &nbsp;: </span><strong>Kolese Kanisius</strong></div>
+        <div><span>Hobi &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </span><strong>Basket &amp; Mogging</strong></div>
+        <div><span>Cita-cita : </span><strong>Mechanical Engineer</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TENTANG SAYA -->
+  <section>
+    <h2>Tentang Saya</h2>
+    <div class="about-box">
+     Saya adalah siswa kelas XI dari Kolese Kanisius yang memiliki minat besar dalam bidang sains, sistem mekanis, dan perancangan mesin. Melalui pengalaman belajar TIK di sekolah, saya menyadari pentingnya integrasi sistem digital dalam mendukung dunia rekayasa fisik. Saya percaya bahwa pemahaman dasar ini akan menjadi modal berharga bagi masa depan, dan saya bersemangat untuk terus berkembang. Tujuan saya adalah menjadi seorang <em>Mechanical Engineer</em> yang mampu menciptakan solusi mekanis yang bermanfaat bagi banyak orang.
+    </div>
+  </section>
+
+  <!-- NILAI -->
+  <section>
+    <h2>Nilai Ulangan Semester</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Materi</th>
+            <th>Nilai</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>Tugas 1 – Struktur HTML Dasar</td><td><span class="badge-nilai">95</span></td></tr>
+          <tr><td>2</td><td>Tugas 2 – Styling dengan CSS</td><td><span class="badge-nilai">95</span></td></tr>
+          <tr><td>3</td><td>Tugas 3 – Flexbox &amp; Grid Layout</td><td><span class="badge-nilai">93</span></td></tr>
+          <tr><td>4</td><td>Tugas 4 – JavaScript Dasar</td><td><span class="badge-nilai">95</span></td></tr>
+          <tr><td>5</td><td>Mini Project Website</td><td><span class="badge-nilai">97</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section>
+    <h2>Project Semester Ini</h2>
+    <div class="projects-grid">
+      <div class="project-card">
+        <h3>Project 1</h3>
+        <p>Website Biodata Siswa – Halaman profil pribadi yang menampilkan data diri, nilai, dan portofolio project menggunakan HTML &amp; CSS.</p>
+        <a href="project1.html" class="btn">Lihat Project</a>
+      </div>
+      <div class="project-card">
+        <h3>Project 2</h3>
+        <p>Kalkulator JavaScript – Aplikasi kalkulator interaktif berbasis web dengan operasi aritmatika dasar menggunakan JavaScript murni.</p>
+        <a href="project2.html" class="btn">Lihat Project</a>
+      </div>
+      <div class="project-card">
+        <h3>Project 3</h3>
+        <p>To Do List App – Aplikasi daftar tugas dinamis yang memungkinkan pengguna menambah, menyelesaikan, dan menghapus item menggunakan JavaScript.</p>
+        <a href="project3.html" class="btn">Lihat Project</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  &copy; 2026 Profil Siswa TIK &nbsp;|&nbsp; Kolese Kanisius
+</footer>
+
+<script>
+  // JavaScript: console log & welcome alert
+  console.log("🚀 Website Profil Siswa TIK berhasil dimuat!");
+  console.log("Nama: Nama Kamu | Kelas: XI | Sekolah: Kolese Kanisius");
+
+  // Staggered animation on cards
+  document.querySelectorAll('.project-card').forEach((card, i) => {
+    card.style.animationDelay = `${i * 0.1}s`;
+  });
+
+  // Welcome notification (subtle, non-blocking)
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      const msg = document.createElement('div');
+      msg.textContent = '👋 Selamat datang di Website Profil Siswa TIK!';
+      Object.assign(msg.style, {
+        position: 'fixed', bottom: '24px', right: '24px',
+        background: '#1a2e5a', color: '#fff',
+        padding: '12px 20px', borderRadius: '12px',
+        fontSize: '.88rem', fontFamily: 'Plus Jakarta Sans, sans-serif',
+        fontWeight: '600', boxShadow: '0 8px 24px rgba(0,0,0,.25)',
+        zIndex: 999, opacity: 0, transition: 'opacity .4s'
+      });
+      document.body.appendChild(msg);
+      requestAnimationFrame(() => msg.style.opacity = 1);
+      setTimeout(() => { msg.style.opacity = 0; setTimeout(() => msg.remove(), 400); }, 3000);
+    }, 600);
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Project 1 – Website Biodata Siswa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Serif+Display&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #1a2e5a; --accent: #3b5bdb; --sky: #e8edf8;
+      --white: #ffffff; --text: #1e2a4a; --muted: #5a6a8a;
+      --border: #d0d9ef; --shadow: 0 4px 24px rgba(26,46,90,.10);
+    }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--sky); color: var(--text); min-height: 100vh; }
+
+    header {
+      background: linear-gradient(135deg, var(--navy) 0%, #243870 60%, #2d4d9e 100%);
+      color: #fff; text-align: center; padding: 36px 20px 28px;
+    }
+    header .badge {
+      display: inline-block; background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.25); border-radius: 20px;
+      padding: 4px 16px; font-size: .78rem; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px;
+    }
+    header h1 { font-family: 'DM Serif Display', serif; font-size: clamp(1.4rem, 3.5vw, 2rem); }
+    header p { margin-top: 6px; font-size: .88rem; opacity: .75; }
+
+    main { max-width: 780px; margin: 0 auto; padding: 40px 20px 60px; }
+
+    .card {
+      background: #fff; border-radius: 18px; box-shadow: var(--shadow);
+      padding: 32px 36px; margin-bottom: 28px;
+      animation: fadeUp .6s ease both;
+    }
+    .card h2 {
+      font-size: 1.05rem; font-weight: 800; color: var(--navy);
+      margin-bottom: 16px; padding-bottom: 10px;
+      border-bottom: 2px solid var(--sky);
+    }
+    .card p { font-size: .9rem; color: var(--muted); line-height: 1.85; }
+
+    .desc-list { display: flex; flex-direction: column; gap: 10px; }
+    .desc-list .row {
+      display: flex; align-items: flex-start; gap: 12px;
+      font-size: .9rem; padding: 10px 14px;
+      background: var(--sky); border-radius: 10px;
+    }
+    .desc-list .label { color: var(--muted); min-width: 90px; font-size: .82rem; padding-top: 2px; }
+    .desc-list .val { font-weight: 600; color: var(--text); }
+
+    .tech-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .tag {
+      background: var(--navy); color: #fff;
+      border-radius: 8px; padding: 5px 16px;
+      font-size: .8rem; font-weight: 600; letter-spacing: .3px;
+    }
+    .tag.alt { background: var(--sky); color: var(--navy); border: 1px solid var(--border); }
+
+    .code-block {
+      background: #1e2a4a; color: #a8d8ff;
+      border-radius: 12px; padding: 18px 22px;
+      font-family: 'Courier New', monospace; font-size: .82rem;
+      line-height: 1.8; margin-top: 16px; overflow-x: auto;
+    }
+    .code-block .kw { color: #ffd166; }
+    .code-block .str { color: #06d6a0; }
+    .code-block .cmt { color: #6a7f9e; }
+
+    .btn-back {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--navy); color: #fff; border: none;
+      border-radius: 10px; padding: 12px 28px;
+      font-size: .9rem; font-weight: 600; font-family: inherit;
+      cursor: pointer; text-decoration: none; transition: background .2s, transform .15s;
+    }
+    .btn-back:hover { background: var(--accent); transform: scale(1.03); }
+    .btn-back span { font-size: 1.1rem; }
+
+    footer {
+      background: var(--navy); color: rgba(255,255,255,.6);
+      text-align: center; padding: 18px; font-size: .82rem;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @media (max-width: 520px) { .card { padding: 22px 16px; } }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="badge">Project 1</div>
+  <h1>Website Biodata Siswa</h1>
+  <p>Mata Pelajaran TIK – Kelas XI</p>
+</header>
+
+<main>
+
+  <div class="card" style="animation-delay:.05s">
+    <h2>📋 Deskripsi Project</h2>
+    <p>
+      Website Biodata Siswa adalah halaman web yang menampilkan profil lengkap seorang siswa, meliputi data diri, nilai ulangan semester, dan portofolio project.
+      Website ini dibangun menggunakan HTML untuk struktur, CSS untuk tampilan visual yang menarik dan responsif, serta JavaScript untuk interaktivitas dasar.
+      Project ini merupakan tugas pertama dalam mata pelajaran TIK yang bertujuan melatih kemampuan dasar pembuatan website.
+    </p>
+  </div>
+
+  <div class="card" style="animation-delay:.1s">
+    <h2>📌 Detail Project</h2>
+    <div class="desc-list">
+      <div class="row"><span class="label">Nama Project</span><span class="val">Website Biodata Siswa</span></div>
+      <div class="row"><span class="label">Tujuan</span><span class="val">Menampilkan profil, nilai, dan portofolio siswa</span></div>
+      <div class="row"><span class="label">Fitur Utama</span><span class="val">Profil card, tabel nilai, project grid</span></div>
+      <div class="row"><span class="label">Status</span><span class="val">✅ Selesai</span></div>
+    </div>
+  </div>
+
+  <div class="card" style="animation-delay:.15s">
+    <h2>🛠 Teknologi yang Digunakan</h2>
+    <div class="tech-tags">
+      <span class="tag">HTML5</span>
+      <span class="tag">CSS3</span>
+      <span class="tag">JavaScript</span>
+      <span class="tag alt">Flexbox</span>
+      <span class="tag alt">CSS Grid</span>
+      <span class="tag alt">Responsive Design</span>
+      <span class="tag alt">Google Fonts</span>
+    </div>
+  </div>
+
+  <div class="card" style="animation-delay:.2s">
+    <h2>💻 Cuplikan Kode</h2>
+    <div class="code-block">
+      <span class="cmt">&lt;!-- Struktur biodata siswa --&gt;</span><br/>
+      <span class="kw">&lt;div</span> class=<span class="str">"profile-card"</span><span class="kw">&gt;</span><br/>
+      &nbsp;&nbsp;<span class="kw">&lt;img</span> src=<span class="str">"foto.jpg"</span> class=<span class="str">"avatar"</span><span class="kw">/&gt;</span><br/>
+      &nbsp;&nbsp;<span class="kw">&lt;h2&gt;</span>Nama Kamu<span class="kw">&lt;/h2&gt;</span><br/>
+      &nbsp;&nbsp;<span class="kw">&lt;p&gt;</span>Kelas XI – Kolese Kanisius<span class="kw">&lt;/p&gt;</span><br/>
+      <span class="kw">&lt;/div&gt;</span><br/><br/>
+      <span class="cmt">// JavaScript: tampilkan pesan sambutan</span><br/>
+      <span class="kw">console</span>.log(<span class="str">"Selamat datang!"</span>);
+    </div>
+  </div>
+
+  <a href="index.html" class="btn-back">
+    <span>←</span> Kembali ke Halaman Utama
+  </a>
+
+</main>
+
+<footer>&copy; 2026 Profil Siswa TIK | Kolese Kanisius</footer>
+
+<script>
+  console.log("📄 Project 1: Website Biodata Siswa dimuat.");
+</script>
+
+</body>
+</html>
